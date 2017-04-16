@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Common.Extensions
+﻿namespace Common.String.Extensions
 {
     using System;
 
@@ -30,16 +26,79 @@ namespace Common.Extensions
         public static short ToShort(this string str) => str.IsWhitespace() ? (short)0 : Convert.ToInt16(str);
 
         public static long ToLong(this string str) => str.IsWhitespace() ? 0 : Convert.ToInt64(str);
-
+        
         public static double ToDouble(this string str) => str.IsWhitespace() ? 0 : Convert.ToDouble(str);
 
         public static decimal ToDecimal(this string str) => str.IsWhitespace() ? 0 : Convert.ToDecimal(str);
 
-        public static int ToIntSafe(this string source) => !source.IsWhitespace() && int.TryParse(source, out outInt) ? outInt : 0;
+        public static int ToIntSafe(this string source)
+        {
+            if (!source.IsWhitespace())
+            {
+                if (int.TryParse(source, out outInt))
+                {
+                    return outInt;
+                }
+                else if (double.TryParse(source, out outDouble))
+                {
+                    return int.TryParse(source.Split('.')[0], out outInt) ? outInt : 0;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
-        public static short ToShortSafe(this string source) => !source.IsWhitespace() && short.TryParse(source, out outShort) ? outShort : (short)0;
+        public static short ToShortSafe(this string source)
+        {
+            if (!source.IsWhitespace())
+            {
+                if (short.TryParse(source, out outShort))
+                {
+                    return outShort;
+                }
+                else if (double.TryParse(source, out outDouble))
+                {
+                    return short.TryParse(source.Split('.')[0], out outShort) ? outShort : (short)0;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
-        public static long ToLongSafe(this string source) => !source.IsWhitespace() && long.TryParse(source, out outLong) ? outLong : 0;
+        public static long ToLongSafe(this string source)
+        {
+            if (!source.IsWhitespace())
+            {
+                if (long.TryParse(source, out outLong))
+                {
+                    return outLong;
+                }
+                else if (double.TryParse(source, out outDouble))
+                {
+                    return long.TryParse(source.Split('.')[0], out outLong) ? outLong : 0;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
         public static double ToDoubleSafe(this string source) => !source.IsWhitespace() && double.TryParse(source, out outDouble) ? outDouble : 0;
 
